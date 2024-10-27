@@ -1,0 +1,53 @@
+# Diretórios do Flutter
+.dart_tool/
+.build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+.idea/
+.vscode/
+android/.gradle/
+android/app/*.keystore
+**/GeneratedPluginRegistrant.java
+**/GeneratedPluginRegistrant.swift
+
+# Arquivos do Xcode
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/.symlinks/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+
+# Arquivos de build
+build/
+ios/Flutter/App.framework
+web/
+.flutter-plugins-dependencies
+macos/Flutter/ephemeral/
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+linux/flutter/generated_plugin_registrant.cc
+
+# Arquivos de configuração do sistema operacional
+.DS_Store
+*.iml
+*.hprof
+*.log
+*.bak
+*.swp
+*.lock
+*.orig
+*.rej
+*.sublime-workspace
+*.xcworkspace
+.idea/
+*.ipr
+*.iws
+
+# Arquivos de cache específicos da IDE
+.vscode/
