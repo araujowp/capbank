@@ -55,7 +55,7 @@ class MyHomePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => BalancePage(
-                          id: user.id.toString(),
+                          id: user.id,
                           name: user.name,
                           photo: user.photo,
                         ),
