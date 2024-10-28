@@ -1,4 +1,4 @@
-import 'package:capbank/service/user_dto.dart';
+import 'package:capbank/service/user/user_dto.dart';
 
 class UserService {
   final List<UserDTO> _users = [

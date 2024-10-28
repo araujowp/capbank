@@ -1,5 +1,5 @@
 import 'package:capbank/pages/balance_page.dart';
-import 'package:capbank/service/user_service.dart';
+import 'package:capbank/service/user/user_service.dart';
 import 'package:capbank/user_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quem é voce?'),
+        title: const Text('Quem é você?'),
       ),
       body: FutureBuilder(
         future: userService.fetchUsers(),

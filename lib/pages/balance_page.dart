@@ -16,7 +16,7 @@ class BalancePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ola, $name"),
+        title: Text("Olá, $name"),
       ),
       body: Center(
         child: Text(" corpo da pagina $id - $name"),
