@@ -1,6 +1,6 @@
 import 'package:capbank/pages/balance_page.dart';
 import 'package:capbank/service/user/user_service.dart';
-import 'package:capbank/user_avatar.dart';
+import 'package:capbank/components/user_avatar.dart';
 import 'package:flutter/material.dart';
 
 void main() {

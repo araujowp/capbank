@@ -8,11 +8,23 @@ class BalanceService {
       date: '2024-10-01',
       transactions: [
         TransactionDto(
-          amount: 200.00,
-          description: 'Compra de supermercado',
-          category: 'Alimentação',
-          operation: 'Débito',
+          amount: 2.00,
+          description: 'Sessão 3 unidade 2',
+          category: 'Duolingo Unidade',
+          operation: 'Crédito',
         ),
+        TransactionDto(
+          amount: 0.50,
+          description: 'Bom comportamento',
+          category: 'Manhã',
+          operation: 'Crédito',
+        ),
+        TransactionDto(
+          amount: 2.00,
+          description: 'Final master chef 5',
+          category: 'Aposta',
+          operation: 'Credito',
+        )
       ],
     ),
     BalanceDTO(
@@ -20,30 +32,23 @@ class BalanceService {
       date: '2024-10-02',
       transactions: [
         TransactionDto(
-          amount: 300.00,
-          description: 'Pagamento de contas',
-          category: 'Contas',
-          operation: 'Débito',
+          amount: 20.00,
+          description: 'Unidade 13 sessão 3',
+          category: 'Duolingo Unidade',
+          operation: 'Crédito',
         ),
         TransactionDto(
-          amount: 937.56,
-          description: 'Salário recebido',
-          category: 'Renda',
-          operation: 'Crédito',
+          amount: 50.00,
+          description: 'Capa do tablet',
+          category: 'Compra',
+          operation: 'Débito',
         ),
       ],
     ),
     BalanceDTO(
       amount: 3500.00,
       date: '2024-10-03',
-      transactions: [
-        TransactionDto(
-          amount: 50.00,
-          description: 'Taxa de serviço',
-          category: 'Serviços',
-          operation: 'Débito',
-        ),
-      ],
+      transactions: [],
     ),
   ];
 
