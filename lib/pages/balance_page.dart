@@ -1,4 +1,5 @@
 import 'package:capbank/components/amount_display.dart';
+import 'package:capbank/components/transaction_card.dart';
 import 'package:capbank/service/balance/balance_service.dart';
 import 'package:flutter/material.dart';
 
@@ -31,18 +32,36 @@ class BalancePage extends StatelessWidget {
               return const Center(child: Text('Erro ao carregar os dados.'));
             } else {
               final balance = snapshot.data!;
-              return Center(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('saldo'),
-                  AmountDisplay(
-                    amount: balance.amount,
-                    date: balance.date,
-                  ),
-                  const Text('Ultimos lançamentos'),
-                ],
-              ));
+              return SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Center(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('saldo'),
+                      AmountDisplay(
+                        amount: balance.amount,
+                        date: balance.date,
+                      ),
+                      const Text('Ultimos lançamentos'),
+                      Expanded(
+                          child: ListView.builder(
+                        itemCount: balance.transactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction = snapshot.data!;
+                          return TransactionCard(
+                            amount: transaction.amount,
+                            description: 'descrip',
+                            category: 'categ',
+                            operation: 'operatiom',
+                          );
+                        },
+                      ))
+                    ],
+                  )),
+                ),
+              );
             }
           },
         ),
