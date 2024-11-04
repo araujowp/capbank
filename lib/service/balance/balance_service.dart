@@ -46,7 +46,7 @@ class BalanceService {
       ],
     ),
     BalanceDTO(
-      amount: 3500.00,
+      amount: -3509.76,
       date: '2024-10-03',
       transactions: [],
     ),
