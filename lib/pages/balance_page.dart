@@ -49,12 +49,12 @@ class BalancePage extends StatelessWidget {
                           child: ListView.builder(
                         itemCount: balance.transactions.length,
                         itemBuilder: (context, index) {
-                          final transaction = snapshot.data!;
+                          final transaction = balance.transactions[index];
                           return TransactionCard(
                             amount: transaction.amount,
-                            description: 'descrip',
-                            category: 'categ',
-                            operation: 'operatiom',
+                            description: transaction.description,
+                            category: transaction.category,
+                            operation: transaction.operation,
                           );
                         },
                       ))
