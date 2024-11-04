@@ -1,5 +1,6 @@
 import 'package:capbank/components/amount_display.dart';
 import 'package:capbank/components/transaction_card.dart';
+import 'package:capbank/pages/transaction_page.dart';
 import 'package:capbank/service/balance/balance_service.dart';
 import 'package:flutter/material.dart';
 
@@ -36,30 +37,49 @@ class BalancePage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Center(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('saldo'),
-                      AmountDisplay(
-                        amount: balance.amount,
-                        date: balance.date,
-                      ),
-                      const Text('Ultimos lançamentos'),
-                      Expanded(
-                          child: ListView.builder(
-                        itemCount: balance.transactions.length,
-                        itemBuilder: (context, index) {
-                          final transaction = balance.transactions[index];
-                          return TransactionCard(
-                            amount: transaction.amount,
-                            description: transaction.description,
-                            category: transaction.category,
-                            operation: transaction.operation,
-                          );
-                        },
-                      ))
-                    ],
-                  )),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('saldo'),
+                        AmountDisplay(
+                          amount: balance.amount,
+                          date: balance.date,
+                        ),
+                        const Text('Ultimos lançamentos'),
+                        Expanded(
+                            child: ListView.builder(
+                          itemCount: balance.transactions.length,
+                          itemBuilder: (context, index) {
+                            final transaction = balance.transactions[index];
+                            return TransactionCard(
+                              amount: transaction.amount,
+                              description: transaction.description,
+                              category: transaction.category,
+                              operation: transaction.operation,
+                            );
+                          },
+                        )),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.all(8.0),
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const TransactionPage()));
+                            },
+                            backgroundColor: Colors.yellow,
+                            shape: const CircleBorder(),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.green,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               );
             }
