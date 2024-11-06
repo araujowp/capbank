@@ -27,7 +27,6 @@ class AmountDisplay extends StatelessWidget {
                 UtilFormat.toMoney(amount),
                 style: TextStyle(
                   fontSize: 32,
-                  fontFamily: 'Adlam Display',
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),

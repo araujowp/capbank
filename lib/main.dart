@@ -12,14 +12,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onPrimaryColor = Theme.of(context).colorScheme.onPrimary;
     return MaterialApp(
       title: 'Capbank',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF446129)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF446129), //
+            onPrimary: Colors.white),
+        fontFamily: 'Adlam Display',
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(fontSize: 32, color: Colors.green),
+        ),
         useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF446129),
-          foregroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: const Color(0xFF446129),
+          foregroundColor: onPrimaryColor,
           elevation: 2,
         ),
       ),
