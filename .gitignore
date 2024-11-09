@@ -51,3 +51,6 @@ linux/flutter/generated_plugin_registrant.cc
 
 # Arquivos de cache específicos da IDE
 .vscode/
+
+## Arquivo de configuração do Firebase
+google-services.json

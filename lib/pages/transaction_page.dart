@@ -127,6 +127,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 ElevatedButton(
                   onPressed: () {
                     print('Cancelar');
+                    Navigator.pop(context);
                   },
                   child: const Text('Cancelar'),
                 ),
