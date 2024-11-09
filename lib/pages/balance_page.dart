@@ -67,7 +67,10 @@ class BalancePage extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => const TransactionPage()));
+                                      builder: (_) => TransactionPage(
+                                            id: id,
+                                            transactionDate: balance.date,
+                                          )));
                             },
                             backgroundColor: Colors.yellow,
                             shape: const CircleBorder(),
