@@ -1,3 +1,4 @@
+import 'package:capbank/pages/new_category_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -68,24 +69,33 @@ class _TransactionPageState extends State<TransactionPage> {
               ],
             ),
 
-            // Caixa de combinação (Dropdown)
             const SizedBox(height: 16.0),
             const Text('Categoria'),
-            DropdownButton<String>(
-              hint: const Text('Selecione uma categoria'),
-              value: _selectedCategory,
-              items: ['Alimentação', 'Transporte', 'Saúde', 'Lazer']
-                  .map((category) {
-                return DropdownMenuItem(
-                  value: category,
-                  child: Text(category),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              },
+            Row(
+              children: [
+                DropdownButton<String>(
+                  hint: const Text('Selecione uma categoria'),
+                  value: _selectedCategory,
+                  items: ['Alimentação', 'Transporte', 'Saúde', 'Lazer']
+                      .map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  },
+                ),
+                FloatingActionButton(onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const NewCategoryPage()));
+                }),
+              ],
             ),
 
             // Campo de texto para descrição
@@ -126,6 +136,7 @@ class _TransactionPageState extends State<TransactionPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    // ignore: avoid_print
                     print('Cancelar');
                     Navigator.pop(context);
                   },
@@ -133,6 +144,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    // ignore: avoid_print
                     print('salvar');
                   },
                   child: const Text('Salvar'),

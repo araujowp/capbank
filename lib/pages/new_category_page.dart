@@ -1,15 +1,20 @@
+// ignore_for_file: avoid_print
+
+import 'package:capbank/service/category/category_dto_new.dart';
+import 'package:capbank/service/category/category_service.dart';
 import 'package:flutter/material.dart';
 
 class NewCategoryPage extends StatefulWidget {
   const NewCategoryPage({super.key});
 
   @override
-  _NewCategoryPageState createState() => _NewCategoryPageState();
+  NewCategoryPageState createState() => NewCategoryPageState();
 }
 
-class _NewCategoryPageState extends State<NewCategoryPage> {
+class NewCategoryPageState extends State<NewCategoryPage> {
   int _selectedType = 1; // Valor padrão para "Crédito"
   final TextEditingController _descriptionController = TextEditingController();
+  final categoryService = CategoryService();
 
   @override
   void dispose() {
@@ -18,19 +23,21 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
   }
 
   void _onCancel() {
-    // Limpa os campos e volta para a página anterior
     _descriptionController.clear();
     Navigator.pop(context);
   }
 
-  void _onSubmit() {
+  Future<void> _onSubmit() async {
     final String description = _descriptionController.text;
     final int type = _selectedType;
 
-    // Aqui você pode chamar o serviço para cadastrar a categoria
-    print("Descrição: $description, Tipo: $type");
+    final newCategory =
+        CategoryDTONew(description: description, type: _selectedType);
 
-    // Limpa os campos após o cadastro
+    print('================= antes de esperarr ================');
+    bool result = await categoryService.add(newCategory);
+    print("Descrição: $description, Tipo: $type -$result ");
+
     _descriptionController.clear();
   }
 
@@ -84,6 +91,7 @@ class _NewCategoryPageState extends State<NewCategoryPage> {
               children: [
                 ElevatedButton(
                   onPressed: _onCancel,
+                  // ignore: deprecated_member_use
                   style: ElevatedButton.styleFrom(primary: Colors.grey),
                   child: const Text("Cancelar"),
                 ),
