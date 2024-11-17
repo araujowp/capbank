@@ -35,6 +35,26 @@ class NewCategoryPageState extends State<NewCategoryPage> {
         CategoryDTONew(description: description, type: _selectedType);
 
     bool result = await categoryService.add(newCategory);
+
+    if (result) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Categoria adicionada com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // Notificação de falha
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao adicionar categoria. Tente novamente!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
     print("Descrição: $description, Tipo: $type -$result ");
 
     _descriptionController.clear();

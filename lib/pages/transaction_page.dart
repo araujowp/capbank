@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:capbank/pages/new_category_page.dart';
+import 'package:capbank/service/category/category_dto.dart';
+import 'package:capbank/service/category/category_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +22,7 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
-  String _operation = 'credito'; // Valor padrão para o radio button
+  int _operation = 1;
   String? _selectedCategory; // Categoria selecionada na caixa de combinação
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
@@ -26,6 +30,18 @@ class _TransactionPageState extends State<TransactionPage> {
   // Formatação para valores monetários
   final NumberFormat _currencyFormatter =
       NumberFormat.simpleCurrency(locale: 'pt_BR');
+
+  final categoryService = CategoryService();
+  List<CategoryDTO> _categories = [];
+
+  Future<void> _loadCategories() async {
+    print('load acionado $_operation ');
+    List<CategoryDTO> categories = await categoryService.getByType(_operation);
+    setState(() {
+      _categories = categories;
+    });
+    print('Categorias carregadas: ${categories.length}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,23 +62,25 @@ class _TransactionPageState extends State<TransactionPage> {
             const Text('Tipo de Operação'),
             Row(
               children: [
-                Radio<String>(
-                  value: 'credito',
+                Radio(
+                  value: 2,
                   groupValue: _operation,
                   onChanged: (value) {
                     setState(() {
                       _operation = value!;
                     });
+                    _loadCategories();
                   },
                 ),
                 const Text('Crédito'),
-                Radio<String>(
-                  value: 'debito',
+                Radio(
+                  value: 1,
                   groupValue: _operation,
                   onChanged: (value) {
                     setState(() {
                       _operation = value!;
                     });
+                    _loadCategories();
                   },
                 ),
                 const Text('Débito'),
@@ -76,11 +94,11 @@ class _TransactionPageState extends State<TransactionPage> {
                 DropdownButton<String>(
                   hint: const Text('Selecione uma categoria'),
                   value: _selectedCategory,
-                  items: ['Alimentação', 'Transporte', 'Saúde', 'Lazer']
-                      .map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
+                  items: _categories.map((category) {
+                    return DropdownMenuItem<String>(
+                      value:
+                          category.id, // Armazena o id da categoria selecionada
+                      child: Text(category.description), // Exibe a descrição
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -136,7 +154,6 @@ class _TransactionPageState extends State<TransactionPage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // ignore: avoid_print
                     print('Cancelar');
                     Navigator.pop(context);
                   },
@@ -144,7 +161,6 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // ignore: avoid_print
                     print('salvar');
                   },
                   child: const Text('Salvar'),

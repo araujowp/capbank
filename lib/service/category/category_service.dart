@@ -38,7 +38,7 @@ class CategoryService {
   Future<List<CategoryDTO>> getByType(int type) async {
     try {
       final snapshot = await _dbRef
-          .orderByChild('description')
+          .orderByChild('type')
           .equalTo(type) // Filtra pelo tipo fornecido
           .get();
 
@@ -50,6 +50,7 @@ class CategoryService {
         ));
       }
 
+      categories.sort((a, b) => a.description.compareTo(b.description));
       return categories;
     } catch (e) {
       print("Erro ao buscar categorias: $e");
