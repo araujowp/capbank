@@ -34,7 +34,6 @@ class NewCategoryPageState extends State<NewCategoryPage> {
     final newCategory =
         CategoryDTONew(description: description, type: _selectedType);
 
-    print('================= antes de esperarr ================');
     bool result = await categoryService.add(newCategory);
     print("Descrição: $description, Tipo: $type -$result ");
 

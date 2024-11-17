@@ -8,6 +8,16 @@ class CategoryService {
 
   Future<bool> add(CategoryDTONew category) async {
     try {
+      final snapshot = await _dbRef
+          .orderByChild('description')
+          .equalTo(category.description)
+          .get();
+
+      if (snapshot.exists) {
+        print("Categoria com a descrição '${category.description}' já existe.");
+        return false;
+      }
+
       final newCategoryRef =
           _dbRef.push(); // Gera uma chave única para o registro
 
@@ -17,7 +27,6 @@ class CategoryService {
         "description": category.description,
         "type": category.type,
       });
-      print('categoria gerada com sucesso !');
       return true;
     } catch (e) {
       print("Erro ao adicionar categoria: $e");
