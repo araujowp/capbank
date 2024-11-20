@@ -7,4 +7,12 @@ class CategoryDTO {
       {required this.description, //
       required this.id, //
       required this.type});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'description': description,
+      'id': id,
+      'type': type,
+    };
+  }
 }

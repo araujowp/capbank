@@ -1,8 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:capbank/pages/new_category_page.dart';
+import 'package:capbank/service/balance/transaction_dto.dart';
 import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/category/category_service.dart';
+import 'package:capbank/service/transaction/transaction_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +25,7 @@ class TransactionPage extends StatefulWidget {
 
 class _TransactionPageState extends State<TransactionPage> {
   int _operation = 1;
-  String? _selectedCategory; // Categoria selecionada na caixa de combinação
+  CategoryDTO? _selectedCategory;
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
 
@@ -33,6 +35,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
   final categoryService = CategoryService();
   List<CategoryDTO> _categories = [];
+  final transactionService = TransactionService();
 
   Future<void> _loadCategories() async {
     print('load acionado $_operation ');
@@ -41,6 +44,58 @@ class _TransactionPageState extends State<TransactionPage> {
       _categories = categories;
     });
     print('Categorias carregadas: ${categories.length}');
+  }
+
+  Future<void> _addTransaction() async {
+    final String description = _descriptionController.text;
+
+    if (_selectedCategory == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, selecione uma categoria.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    String amountText = _amountController.text;
+    amountText = amountText.replaceAll(RegExp(r'[^\d.]'), '');
+    double amount = double.tryParse(amountText) ?? 0.0;
+
+    print('Valor capturado: $amount');
+    print("categoria selecionada ${_selectedCategory?.description}");
+    print("categoria selecionada id ${_selectedCategory?.id}");
+    print("categoria selecionada type ${_selectedCategory?.type}");
+
+    final newTransactioDto = TransactionDto(
+        description: description, //
+        amount: amount, //
+        transactionDate: DateTime.now(), //
+        category: _selectedCategory!, //
+        userId: widget.id.toString());
+    print("geramos o new transaction ");
+
+    bool result = await transactionService.add(newTransactioDto);
+
+    if (result) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Lançamento adicionado com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      // Notificação de falha
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao adicionar lançamento. Tente novamente!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -91,13 +146,12 @@ class _TransactionPageState extends State<TransactionPage> {
             const Text('Categoria'),
             Row(
               children: [
-                DropdownButton<String>(
+                DropdownButton<CategoryDTO>(
                   hint: const Text('Selecione uma categoria'),
                   value: _selectedCategory,
                   items: _categories.map((category) {
-                    return DropdownMenuItem<String>(
-                      value:
-                          category.id, // Armazena o id da categoria selecionada
+                    return DropdownMenuItem<CategoryDTO>(
+                      value: category, // Armazena o id da categoria selecionada
                       child: Text(category.description), // Exibe a descrição
                     );
                   }).toList(),
@@ -161,6 +215,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    _addTransaction();
                     print('salvar');
                   },
                   child: const Text('Salvar'),

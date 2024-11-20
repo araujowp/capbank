@@ -11,12 +11,15 @@ class TransactionService {
       final newTransactionRef = _dbRef.push();
       print("Chave gerada: ${newTransactionRef.key}");
 
+      print(transactionDto.category.toJson());
+
       await newTransactionRef.set({
         "id": newTransactionRef.key,
-        "description": transactionDto.category,
+        "description": transactionDto.description,
         "amount": transactionDto.amount,
-        "transaction_date": transactionDto.transactionDate,
-        "category": transactionDto.category,
+        "transaction_date":
+            transactionDto.transactionDate.millisecondsSinceEpoch,
+        "category": transactionDto.category.toJson(),
         "user_id": transactionDto.userId
       });
 
