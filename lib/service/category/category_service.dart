@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+//import 'dart:ffi';
+
 import 'package:capbank/service/category/category_dto.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'category_dto_new.dart';
@@ -19,10 +21,8 @@ class CategoryService {
         return false;
       }
 
-      final newCategoryRef =
-          _dbRef.push(); // Gera uma chave única para o registro
+      final newCategoryRef = _dbRef.push();
 
-      print("Chave gerada: ${newCategoryRef.key}");
       await newCategoryRef.set({
         "id": newCategoryRef.key,
         "description": category.description,
@@ -47,6 +47,7 @@ class CategoryService {
         categories.add(CategoryDTO(
           description: child.child('description').value.toString(),
           id: child.child('id').value.toString(),
+          type: int.parse(child.child('type').value.toString()),
         ));
       }
 

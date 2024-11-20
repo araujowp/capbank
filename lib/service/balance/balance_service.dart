@@ -1,5 +1,6 @@
 import 'package:capbank/service/balance/balance_dto.dart';
 import 'package:capbank/service/balance/transaction_dto.dart';
+import 'package:capbank/service/category/category_dto.dart';
 
 class BalanceService {
   final List<BalanceDTO> _balances = [
@@ -10,20 +11,24 @@ class BalanceService {
         TransactionDto(
           amount: 2.00,
           description: 'Sessão 3 unidade 2',
-          category: 'Duolingo Unidade',
-          operation: 'Crédito',
+          transactionDate: DateTime.now(),
+          category: CategoryDTO(
+              description: 'Duolindo unidade', id: 'compra1', type: 1),
+          userId: '1',
         ),
         TransactionDto(
           amount: 0.50,
           description: 'Bom comportamento',
-          category: 'Manhã',
-          operation: 'Crédito',
+          transactionDate: DateTime.now(),
+          category: CategoryDTO(description: 'Manhã', id: 'compra1', type: 1),
+          userId: '1',
         ),
         TransactionDto(
           amount: 2.00,
           description: 'Final master chef 5',
-          category: 'Aposta',
-          operation: 'Credito',
+          transactionDate: DateTime.now(),
+          category: CategoryDTO(description: 'Aposta', id: 'compra1', type: 1),
+          userId: '1',
         )
       ],
     ),
@@ -34,14 +39,17 @@ class BalanceService {
         TransactionDto(
           amount: 20.00,
           description: 'Unidade 13 sessão 3',
-          category: 'Duolingo Unidade',
-          operation: 'Crédito',
+          transactionDate: DateTime.now(),
+          category: CategoryDTO(
+              description: 'Unidade Duolindo', id: 'compra1', type: 1),
+          userId: '2',
         ),
         TransactionDto(
           amount: 50.00,
           description: 'Capa do tablet',
-          category: 'Compra',
-          operation: 'Débito',
+          transactionDate: DateTime.now(),
+          category: CategoryDTO(description: 'compra', id: 'compra1', type: 2),
+          userId: '2',
         ),
       ],
     ),
@@ -52,8 +60,25 @@ class BalanceService {
     ),
   ];
 
-  Future<BalanceDTO> getBalance(int id) async {
+  Future<BalanceDTO> getBalance(String userId, DateTime transactionDate) async {
     await Future.delayed(const Duration(seconds: 1));
-    return _balances[id - 1];
+
+    // Filtra o balanço com base no userId e na data
+    final filteredBalances = _balances.where((balance) {
+      return balance.transactions.any((transaction) =>
+          transaction.userId == userId &&
+              transaction.transactionDate.isBefore(transactionDate) ||
+          transaction.transactionDate.isAtSameMomentAs(transactionDate));
+    }).toList();
+
+    if (filteredBalances.isNotEmpty) {
+      return filteredBalances.first;
+    }
+
+    return BalanceDTO(
+      amount: 0.0,
+      date: DateTime.now().toString(),
+      transactions: [],
+    );
   }
 }

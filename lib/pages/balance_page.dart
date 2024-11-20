@@ -25,7 +25,7 @@ class BalancePage extends StatelessWidget {
       ),
       body: Center(
         child: FutureBuilder(
-          future: balanceService.getBalance(id),
+          future: balanceService.getBalance(id.toString(), DateTime.now()),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -54,8 +54,8 @@ class BalancePage extends StatelessWidget {
                             return TransactionCard(
                               amount: transaction.amount,
                               description: transaction.description,
-                              category: transaction.category,
-                              operation: transaction.operation,
+                              category: transaction.category.description,
+                              operation: transaction.category.type.toString(),
                             );
                           },
                         )),
