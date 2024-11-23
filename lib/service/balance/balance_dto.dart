@@ -1,4 +1,4 @@
-import 'package:capbank/service/balance/transaction_dto.dart';
+import 'package:capbank/service/transaction/transaction_dto.dart';
 
 class BalanceDTO {
   final double amount;

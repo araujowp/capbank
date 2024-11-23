@@ -1,6 +1,7 @@
 import 'package:capbank/service/category/category_dto.dart';
 
 class TransactionDto {
+  final String id;
   final String description;
   final double amount;
   final DateTime transactionDate;
@@ -9,6 +10,7 @@ class TransactionDto {
 
   // Construtor
   TransactionDto({
+    required this.id,
     required this.description,
     required this.amount,
     required this.transactionDate,
@@ -23,6 +25,7 @@ class TransactionDto {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'amount': amount,
       'description': description,
       'category': category,
@@ -33,6 +36,7 @@ class TransactionDto {
 
   factory TransactionDto.fromJson(Map<String, dynamic> json) {
     return TransactionDto(
+      id: json['id'] as String,
       description: json['description'] as String,
       amount: json['amount'] as double,
       category: json['category'] as CategoryDTO,

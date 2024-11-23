@@ -1,84 +1,25 @@
+// ignore_for_file: avoid_print
+
 import 'package:capbank/service/balance/balance_dto.dart';
-import 'package:capbank/service/balance/transaction_dto.dart';
-import 'package:capbank/service/category/category_dto.dart';
+import 'package:capbank/service/transaction/transaction_dto.dart';
+import 'package:capbank/service/transaction/transaction_service.dart';
 
 class BalanceService {
-  final List<BalanceDTO> _balances = [
-    BalanceDTO(
-      amount: 1500.23,
-      date: '2024-10-01',
-      transactions: [
-        TransactionDto(
-          amount: 2.00,
-          description: 'Sessão 3 unidade 2',
-          transactionDate: DateTime.now(),
-          category: CategoryDTO(
-              description: 'Duolindo unidade', id: 'compra1', type: 1),
-          userId: '1',
-        ),
-        TransactionDto(
-          amount: 0.50,
-          description: 'Bom comportamento',
-          transactionDate: DateTime.now(),
-          category: CategoryDTO(description: 'Manhã', id: 'compra1', type: 1),
-          userId: '1',
-        ),
-        TransactionDto(
-          amount: 2.00,
-          description: 'Final master chef 5',
-          transactionDate: DateTime.now(),
-          category: CategoryDTO(description: 'Aposta', id: 'compra1', type: 1),
-          userId: '1',
-        )
-      ],
-    ),
-    BalanceDTO(
-      amount: 2501.48,
-      date: '2024-10-02',
-      transactions: [
-        TransactionDto(
-          amount: 20.00,
-          description: 'Unidade 13 sessão 3',
-          transactionDate: DateTime.now(),
-          category: CategoryDTO(
-              description: 'Unidade Duolindo', id: 'compra1', type: 1),
-          userId: '2',
-        ),
-        TransactionDto(
-          amount: 50.00,
-          description: 'Capa do tablet',
-          transactionDate: DateTime.now(),
-          category: CategoryDTO(description: 'compra', id: 'compra1', type: 2),
-          userId: '2',
-        ),
-      ],
-    ),
-    BalanceDTO(
-      amount: -3509.76,
-      date: '2024-10-03',
-      transactions: [],
-    ),
-  ];
-
   Future<BalanceDTO> getBalance(String userId, DateTime transactionDate) async {
-    await Future.delayed(const Duration(seconds: 1));
+    print('chegamos no balance service ?');
+    final transactionService = TransactionService();
 
-    // Filtra o balanço com base no userId e na data
-    final filteredBalances = _balances.where((balance) {
-      return balance.transactions.any((transaction) =>
-          transaction.userId == userId &&
-              transaction.transactionDate.isBefore(transactionDate) ||
-          transaction.transactionDate.isAtSameMomentAs(transactionDate));
-    }).toList();
+    List<TransactionDto> transactions = await transactionService
+        .getByUserIdandTransactionDate(userId, transactionDate);
 
-    if (filteredBalances.isNotEmpty) {
-      return filteredBalances.first;
-    }
+    print('temos $transactions.length no balance service ');
+    double totalAmount = transactions.fold(0.0,
+        (previousValue, transaction) => previousValue + transaction.amount);
 
     return BalanceDTO(
-      amount: 0.0,
-      date: DateTime.now().toString(),
-      transactions: [],
+      amount: totalAmount,
+      date: transactionDate.toString(),
+      transactions: transactions,
     );
   }
 }

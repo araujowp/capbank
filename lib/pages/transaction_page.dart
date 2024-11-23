@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print
 
 import 'package:capbank/pages/new_category_page.dart';
-import 'package:capbank/service/balance/transaction_dto.dart';
 import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/category/category_service.dart';
+import 'package:capbank/service/transaction/transaction_dto_new.dart';
 import 'package:capbank/service/transaction/transaction_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +68,7 @@ class _TransactionPageState extends State<TransactionPage> {
     print("categoria selecionada id ${_selectedCategory?.id}");
     print("categoria selecionada type ${_selectedCategory?.type}");
 
-    final newTransactioDto = TransactionDto(
+    final newTransactioDto = TransactionDtoNew(
         description: description, //
         amount: amount, //
         transactionDate: DateTime.now(), //
