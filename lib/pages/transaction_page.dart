@@ -37,6 +37,13 @@ class _TransactionPageState extends State<TransactionPage> {
   List<CategoryDTO> _categories = [];
   final transactionService = TransactionService();
 
+  @override
+  void initState() {
+    print('passei no initstate ');
+    super.initState();
+    _loadCategories();
+  }
+
   Future<void> _loadCategories() async {
     print('load acionado $_operation ');
     List<CategoryDTO> categories = await categoryService.getByType(_operation);
@@ -44,6 +51,7 @@ class _TransactionPageState extends State<TransactionPage> {
       _categories = categories;
     });
     print('Categorias carregadas: ${categories.length}');
+    print('opção carregada  $_operation ');
   }
 
   Future<void> _addTransaction() async {
@@ -118,7 +126,7 @@ class _TransactionPageState extends State<TransactionPage> {
             Row(
               children: [
                 Radio(
-                  value: 2,
+                  value: 1,
                   groupValue: _operation,
                   onChanged: (value) {
                     setState(() {
@@ -129,7 +137,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
                 const Text('Crédito'),
                 Radio(
-                  value: 1,
+                  value: 2,
                   groupValue: _operation,
                   onChanged: (value) {
                     setState(() {
@@ -151,7 +159,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   value: _selectedCategory,
                   items: _categories.map((category) {
                     return DropdownMenuItem<CategoryDTO>(
-                      value: category, // Armazena o id da categoria selecionada
+                      value: category,
                       child: Text(category.description), // Exibe a descrição
                     );
                   }).toList(),
