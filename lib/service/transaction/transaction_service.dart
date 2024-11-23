@@ -37,24 +37,18 @@ class TransactionService {
     List<TransactionDto> transactions = [];
 
     try {
-      print('ponto 1');
       final query = _dbRef.orderByChild("user_id").equalTo(userId);
-      print('ponto 2');
       final snapshot = await query.once();
-      print('ponto 3 - map string dinamic bici');
       if (snapshot.snapshot.value != null) {
         // Cast explícito para Map<String, dynamic> no nível principal
         final data = Map<String, dynamic>.from(
             snapshot.snapshot.value as Map<Object?, Object?>);
-        print('ponto 4');
         data.forEach((key, value) {
-          print('ponto 5');
           // Cast explícito para Map<String, dynamic> para cada entrada
           final transactionData =
               Map<String, dynamic>.from(value as Map<Object?, Object?>);
           final transactionDate = DateTime.fromMillisecondsSinceEpoch(
               transactionData["transaction_date"]);
-          print('ponto 6 convertendo double');
           if (transactionDate.isBefore(period)) {
             transactions.add(TransactionDto(
               id: key,
