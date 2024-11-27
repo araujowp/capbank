@@ -5,9 +5,8 @@ import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/category/category_service.dart';
 import 'package:capbank/service/transaction/transaction_dto_new.dart';
 import 'package:capbank/service/transaction/transaction_service.dart';
+import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 class TransactionPage extends StatefulWidget {
   final int id;
@@ -27,11 +26,15 @@ class _TransactionPageState extends State<TransactionPage> {
   int _operation = 1;
   CategoryDTO? _selectedCategory;
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
 
   // Formatação para valores monetários
-  final NumberFormat _currencyFormatter =
-      NumberFormat.simpleCurrency(locale: 'pt_BR');
+
+  final _currencyController = CurrencyTextFieldController(
+      decimalSymbol: ',',
+      thousandSymbol: '.',
+      currencySymbol: 'R\$',
+      enableNegative: false, // Desativa valores negativos
+      minValue: 0.01);
 
   final categoryService = CategoryService();
   List<CategoryDTO> _categories = [];
@@ -39,7 +42,6 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   void initState() {
-    print('passei no initstate ');
     super.initState();
     _loadCategories();
   }
@@ -50,39 +52,56 @@ class _TransactionPageState extends State<TransactionPage> {
     setState(() {
       _categories = categories;
     });
-    print('Categorias carregadas: ${categories.length}');
-    print('opção carregada  $_operation ');
   }
 
-  Future<void> _addTransaction() async {
-    final String description = _descriptionController.text;
-
+  bool _formValidation() {
+    String message = "";
     if (_selectedCategory == null) {
+      message = 'Por favor, selecione uma categoria. \n';
+    }
+
+    if (_descriptionController.text.isEmpty) {
+      message += 'Favor informar a descrição. \n';
+    }
+
+    if (_currencyController.text.isEmpty) {
+      message += 'Favor informar o valor. \n ';
+    }
+
+    if (message.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor, selecione uma categoria.'),
+        SnackBar(
+          content: Text(message),
           backgroundColor: Colors.red,
         ),
       );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void _clear() {
+    setState(() {
+      _selectedCategory = null;
+      _descriptionController.text = "";
+      _currencyController.text = "";
+    });
+  }
+
+  Future<void> _addTransaction() async {
+    if (!_formValidation()) {
       return;
     }
 
-    String amountText = _amountController.text;
-    amountText = amountText.replaceAll(RegExp(r'[^\d.]'), '');
-    double amount = double.tryParse(amountText) ?? 0.0;
-
-    print('Valor capturado: $amount');
-    print("categoria selecionada ${_selectedCategory?.description}");
-    print("categoria selecionada id ${_selectedCategory?.id}");
-    print("categoria selecionada type ${_selectedCategory?.type}");
+    final String description = _descriptionController.text;
 
     final newTransactioDto = TransactionDtoNew(
         description: description, //
-        amount: amount, //
+        amount: _currencyController.doubleValue,
         transactionDate: DateTime.now(), //
         category: _selectedCategory!, //
         userId: widget.id.toString());
-    print("geramos o new transaction ");
 
     bool result = await transactionService.add(newTransactioDto);
 
@@ -94,8 +113,8 @@ class _TransactionPageState extends State<TransactionPage> {
           backgroundColor: Colors.green,
         ),
       );
+      _clear();
     } else {
-      // Notificação de falha
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -188,28 +207,15 @@ class _TransactionPageState extends State<TransactionPage> {
               ),
             ),
 
-            // Campo de texto para valor com formatação para reais
             const SizedBox(height: 16.0),
             TextField(
-              controller: _amountController,
+              controller: _currencyController,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'Valor (R\$)',
+                labelText: 'Valor em reais',
                 border: OutlineInputBorder(),
               ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                TextInputFormatter.withFunction(
-                  (oldValue, newValue) {
-                    final value = double.parse(newValue.text) / 100;
-                    return newValue.copyWith(
-                      text: _currencyFormatter.format(value),
-                    );
-                  },
-                ),
-              ],
             ),
-
             const SizedBox(height: 24.0),
 
             Row(
@@ -224,7 +230,6 @@ class _TransactionPageState extends State<TransactionPage> {
                 ElevatedButton(
                   onPressed: () {
                     _addTransaction();
-                    print('salvar');
                   },
                   child: const Text('Salvar'),
                 ),
