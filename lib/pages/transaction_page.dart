@@ -175,7 +175,12 @@ class _TransactionPageState extends State<TransactionPage> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButton<CategoryDTO>(
+                    child: DropdownButtonFormField<CategoryDTO>(
+                      icon: const Icon(Icons.category_outlined),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      )),
                       isExpanded: true,
                       hint: const Text('Selecione uma categoria'),
                       value: _selectedCategory,
