@@ -1,4 +1,5 @@
 import 'package:capbank/components/amount_display.dart';
+import 'package:capbank/components/plus_button.dart';
 import 'package:capbank/components/transaction_card.dart';
 import 'package:capbank/pages/transaction_page.dart';
 import 'package:capbank/service/balance/balance_service.dart';
@@ -59,26 +60,17 @@ class BalancePage extends StatelessWidget {
                             );
                           },
                         )),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.all(8.0),
-                          child: FloatingActionButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => TransactionPage(
-                                            id: id,
-                                            transactionDate: balance.date,
-                                          )));
-                            },
-                            backgroundColor: Colors.yellow,
-                            shape: const CircleBorder(),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.green,
-                            ),
-                          ),
+                        PlusButton(
+                          size: 60.0,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => TransactionPage(
+                                          id: id,
+                                          transactionDate: balance.date,
+                                        )));
+                          },
                         )
                       ],
                     ),

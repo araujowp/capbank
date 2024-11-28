@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:capbank/components/plus_button.dart';
 import 'package:capbank/pages/new_category_page.dart';
 import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/category/category_service.dart';
@@ -133,109 +134,117 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('ID: ${widget.id}'),
-            Text('Data: ${widget.transactionDate}'),
-            const SizedBox(height: 16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('ID: ${widget.id}'),
+              Text('Data: ${widget.transactionDate}'),
+              const SizedBox(height: 16.0),
 
-            // Radio Buttons para operação
-            const Text('Tipo de Operação'),
-            Row(
-              children: [
-                Radio(
-                  value: 1,
-                  groupValue: _operation,
-                  onChanged: (value) {
-                    setState(() {
-                      _operation = value!;
-                    });
-                    _loadCategories();
-                  },
-                ),
-                const Text('Crédito'),
-                Radio(
-                  value: 2,
-                  groupValue: _operation,
-                  onChanged: (value) {
-                    setState(() {
-                      _operation = value!;
-                    });
-                    _loadCategories();
-                  },
-                ),
-                const Text('Débito'),
-              ],
-            ),
-
-            const SizedBox(height: 16.0),
-            const Text('Categoria'),
-            Row(
-              children: [
-                DropdownButton<CategoryDTO>(
-                  hint: const Text('Selecione uma categoria'),
-                  value: _selectedCategory,
-                  items: _categories.map((category) {
-                    return DropdownMenuItem<CategoryDTO>(
-                      value: category,
-                      child: Text(category.description), // Exibe a descrição
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCategory = value;
-                    });
-                  },
-                ),
-                FloatingActionButton(onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const NewCategoryPage()));
-                }),
-              ],
-            ),
-
-            // Campo de texto para descrição
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Descrição',
-                border: OutlineInputBorder(),
+              // Radio Buttons para operação
+              const Text('Tipo de Operação'),
+              Row(
+                children: [
+                  Radio(
+                    value: 1,
+                    groupValue: _operation,
+                    onChanged: (value) {
+                      setState(() {
+                        _operation = value!;
+                      });
+                      _loadCategories();
+                    },
+                  ),
+                  const Text('Crédito'),
+                  Radio(
+                    value: 2,
+                    groupValue: _operation,
+                    onChanged: (value) {
+                      setState(() {
+                        _operation = value!;
+                      });
+                      _loadCategories();
+                    },
+                  ),
+                  const Text('Débito'),
+                ],
               ),
-            ),
 
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _currencyController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Valor em reais',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16.0),
+              const Text('Categoria'),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButton<CategoryDTO>(
+                      isExpanded: true,
+                      hint: const Text('Selecione uma categoria'),
+                      value: _selectedCategory,
+                      items: _categories.map((category) {
+                        return DropdownMenuItem<CategoryDTO>(
+                          value: category,
+                          child:
+                              Text(category.description), // Exibe a descrição
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      },
+                    ),
+                  ),
+                  PlusButton(
+                      size: 40,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const NewCategoryPage()));
+                      }),
+                ],
               ),
-            ),
-            const SizedBox(height: 24.0),
 
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    print('Cancelar');
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancelar'),
+              // Campo de texto para descrição
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Descrição',
+                  border: OutlineInputBorder(),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _addTransaction();
-                  },
-                  child: const Text('Salvar'),
+              ),
+
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _currencyController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Valor em reais',
+                  border: OutlineInputBorder(),
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 24.0),
+
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      print('Cancelar');
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancelar'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _addTransaction();
+                    },
+                    child: const Text('Salvar'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
