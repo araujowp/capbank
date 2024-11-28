@@ -27,7 +27,26 @@ class NewCategoryPageState extends State<NewCategoryPage> {
     Navigator.pop(context);
   }
 
+  bool _onValidation() {
+    if (_descriptionController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Favor informe a descrição !',
+              style: TextStyle(color: Colors.green)),
+          backgroundColor: Colors.yellow,
+        ),
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Future<void> _onSubmit() async {
+    if (!_onValidation()) {
+      return;
+    }
+
     final String description = _descriptionController.text;
     final int type = _selectedType;
 
@@ -45,7 +64,6 @@ class NewCategoryPageState extends State<NewCategoryPage> {
         ),
       );
     } else {
-      // Notificação de falha
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -110,9 +128,7 @@ class NewCategoryPageState extends State<NewCategoryPage> {
               children: [
                 ElevatedButton(
                   onPressed: _onCancel,
-                  // ignore: deprecated_member_use
-                  style: ElevatedButton.styleFrom(primary: Colors.grey),
-                  child: const Text("Cancelar"),
+                  child: const Text("Voltar"),
                 ),
                 ElevatedButton(
                   onPressed: _onSubmit,

@@ -138,7 +138,6 @@ class _TransactionPageState extends State<TransactionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('ID: ${widget.id}'),
               Text('Data: ${widget.transactionDate}'),
               const SizedBox(height: 16.0),
 
@@ -198,9 +197,12 @@ class _TransactionPageState extends State<TransactionPage> {
                       size: 40,
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const NewCategoryPage()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const NewCategoryPage()))
+                            .then((_) {
+                          _loadCategories();
+                        });
                       }),
                 ],
               ),
