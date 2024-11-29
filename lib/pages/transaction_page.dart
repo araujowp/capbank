@@ -6,12 +6,13 @@ import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/category/category_service.dart';
 import 'package:capbank/service/transaction/transaction_dto_new.dart';
 import 'package:capbank/service/transaction/transaction_service.dart';
+import 'package:capbank/util/util_format.dart';
 import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 
 class TransactionPage extends StatefulWidget {
   final int id;
-  final String transactionDate;
+  final DateTime transactionDate;
 
   const TransactionPage({
     super.key,
@@ -138,7 +139,8 @@ class _TransactionPageState extends State<TransactionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Data: ${widget.transactionDate}'),
+              Text(
+                  'Data lançamento: ${UtilFormat.toDate(widget.transactionDate)}'),
               const SizedBox(height: 16.0),
 
               // Radio Buttons para operação

@@ -2,7 +2,7 @@ import 'package:capbank/service/transaction/transaction_dto.dart';
 
 class BalanceDTO {
   final double amount;
-  final String date;
+  final DateTime date;
   final List<TransactionDto> transactions;
 
   BalanceDTO(

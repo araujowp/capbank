@@ -18,7 +18,7 @@ class BalanceService {
 
     return BalanceDTO(
       amount: totalAmount,
-      date: transactionDate.toString(),
+      date: transactionDate,
       transactions: transactions,
     );
   }

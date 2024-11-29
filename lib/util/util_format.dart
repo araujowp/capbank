@@ -8,4 +8,8 @@ class UtilFormat {
     );
     return currencyFormat.format(value);
   }
+
+  static String toDate(DateTime dateTime, {String format = 'dd/MM/yyyy'}) {
+    return DateFormat(format).format(dateTime);
+  }
 }

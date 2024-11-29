@@ -1,9 +1,10 @@
 import 'package:capbank/util/util_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AmountDisplay extends StatelessWidget {
   final double amount;
-  final String date;
+  final DateTime date;
 
   const AmountDisplay(
       {super.key, //
@@ -30,7 +31,7 @@ class AmountDisplay extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              Text(date),
+              Text(DateFormat('dd/MM/yyyy').format(date)),
             ],
           ),
         ),
