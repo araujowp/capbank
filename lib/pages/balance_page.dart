@@ -94,7 +94,6 @@ class _BalancePageState extends State<BalancePage> {
                                 ),
                               ),
                             ).then((_) {
-                              // Recarrega a página após retornar
                               _loadBalance();
                             });
                           },
