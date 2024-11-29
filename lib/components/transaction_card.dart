@@ -26,11 +26,8 @@ class TransactionCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  color: Colors.black26,
-                ),
+                child: Icon(Icons.menu_book,
+                    size: 30, color: Theme.of(context).colorScheme.primary),
               )
             ],
           ),
