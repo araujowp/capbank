@@ -15,6 +15,18 @@ class AmountDisplay extends StatelessWidget {
       required this.backWard //
       });
 
+  TextStyle _getTextStyle(BuildContext context) {
+    return amount > 0
+        ? TextStyle(
+            fontSize: 30,
+            color: Theme.of(context).colorScheme.primary,
+          )
+        : const TextStyle(
+            fontSize: 30,
+            color: Colors.deepOrange,
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,10 +41,7 @@ class AmountDisplay extends StatelessWidget {
             children: [
               Text(
                 UtilFormat.toMoney(amount),
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: _getTextStyle(context),
               ),
               DateNavigation(date: date, forWard: forWard, backWard: backWard)
             ],
