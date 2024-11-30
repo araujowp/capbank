@@ -18,6 +18,7 @@ class DateNavigation extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FloatingActionButton(
+          heroTag: 'backWard',
           onPressed: backWard, //
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -28,6 +29,7 @@ class DateNavigation extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         FloatingActionButton(
+          heroTag: 'forWard',
           onPressed: forWard, //
           backgroundColor: Colors.transparent,
           elevation: 0,
