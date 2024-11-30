@@ -85,7 +85,7 @@ class _BalancePageState extends State<BalancePage> {
                                 amount: transaction.amount,
                                 description: transaction.description,
                                 category: transaction.category.description,
-                                operation: transaction.category.type.toString(),
+                                operation: transaction.category.type,
                               );
                             },
                           ),

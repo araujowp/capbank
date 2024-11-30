@@ -11,8 +11,11 @@ class BalanceService {
     List<TransactionDto> transactions = await transactionService
         .getByUserIdandTransactionDate(userId, transactionDate);
 
-    double totalAmount = transactions.fold(0.0,
-        (previousValue, transaction) => previousValue + transaction.amount);
+    double totalAmount = transactions.fold(0.0, (previousValue, transaction) {
+      return transaction.category.type == 1
+          ? previousValue + transaction.amount
+          : previousValue - transaction.amount;
+    });
 
     return BalanceDTO(
       amount: totalAmount,
