@@ -1,22 +1,25 @@
+import 'package:capbank/components/date_navigation.dart';
 import 'package:capbank/util/util_format.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AmountDisplay extends StatelessWidget {
   final double amount;
   final DateTime date;
-
+  final VoidCallback forWard;
+  final VoidCallback backWard;
   const AmountDisplay(
       {super.key, //
       required this.amount, //
-      required this.date //
+      required this.date,
+      required this.forWard, //
+      required this.backWard //
       });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 150,
+      height: 130,
       child: Card(
         elevation: 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -27,11 +30,11 @@ class AmountDisplay extends StatelessWidget {
               Text(
                 UtilFormat.toMoney(amount),
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 30,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              Text(DateFormat('dd/MM/yyyy').format(date)),
+              DateNavigation(date: date, forWard: forWard, backWard: backWard)
             ],
           ),
         ),

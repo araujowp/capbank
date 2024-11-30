@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:capbank/components/amount_display.dart';
 import 'package:capbank/components/plus_button.dart';
 import 'package:capbank/components/transaction_card.dart';
@@ -66,6 +68,12 @@ class _BalancePageState extends State<BalancePage> {
                         AmountDisplay(
                           amount: balance.amount,
                           date: balance.date,
+                          forWard: () {
+                            print('para frente');
+                          },
+                          backWard: () {
+                            print('para traz');
+                          },
                         ),
                         const Text('Últimos lançamentos'),
                         Expanded(
