@@ -49,6 +49,8 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future<void> _loadCategories() async {
+    _selectedCategory = null;
+    _currencyController.text = "";
     List<CategoryDTO> categories = await categoryService.getByType(_operation);
     setState(() {
       _categories = categories;
@@ -197,7 +199,7 @@ class _TransactionPageState extends State<TransactionPage> {
                             _currencyController.forceValue(
                                 initDoubleValue: value.sugestedValue);
                           } else {
-                            print('clicou mas esta nulla categoria ');
+                            print('clicou mas esta nula categoria ');
                           }
                         });
                       },
