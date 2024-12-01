@@ -49,7 +49,6 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future<void> _loadCategories() async {
-    print('load acionado $_operation ');
     List<CategoryDTO> categories = await categoryService.getByType(_operation);
     setState(() {
       _categories = categories;
@@ -97,11 +96,10 @@ class _TransactionPageState extends State<TransactionPage> {
     }
 
     final String description = _descriptionController.text;
-
     final newTransactioDto = TransactionDtoNew(
         description: description, //
         amount: _currencyController.doubleValue,
-        transactionDate: DateTime.now(), //
+        transactionDate: widget.transactionDate, //
         category: _selectedCategory!, //
         userId: widget.id.toString());
 
@@ -143,7 +141,6 @@ class _TransactionPageState extends State<TransactionPage> {
                   'Data lançamento: ${UtilFormat.toDate(widget.transactionDate)}'),
               const SizedBox(height: 16.0),
 
-              // Radio Buttons para operação
               const Text('Tipo de Operação'),
               Row(
                 children: [
@@ -195,7 +192,13 @@ class _TransactionPageState extends State<TransactionPage> {
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
-                          _selectedCategory = value;
+                          if (value != null) {
+                            _selectedCategory = value;
+                            _currencyController.forceValue(
+                                initDoubleValue: value.sugestedValue);
+                          } else {
+                            print('clicou mas esta nulla categoria ');
+                          }
                         });
                       },
                     ),
@@ -239,7 +242,6 @@ class _TransactionPageState extends State<TransactionPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      print('Cancelar');
                       Navigator.pop(context);
                     },
                     child: const Text('Cancelar'),

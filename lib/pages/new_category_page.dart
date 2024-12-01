@@ -2,6 +2,7 @@
 
 import 'package:capbank/service/category/category_dto_new.dart';
 import 'package:capbank/service/category/category_service.dart';
+import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 
 class NewCategoryPage extends StatefulWidget {
@@ -15,6 +16,14 @@ class NewCategoryPageState extends State<NewCategoryPage> {
   int _selectedType = 1; // Valor padrão para "Crédito"
   final TextEditingController _descriptionController = TextEditingController();
   final categoryService = CategoryService();
+
+  final _currencyController = CurrencyTextFieldController(
+      decimalSymbol: ',',
+      thousandSymbol: '.',
+      currencySymbol: 'R\$',
+      enableNegative: false, // Desativa valores negativos
+      minValue: 0.01,
+      initDoubleValue: 0.00);
 
   @override
   void dispose() {
@@ -48,10 +57,11 @@ class NewCategoryPageState extends State<NewCategoryPage> {
     }
 
     final String description = _descriptionController.text;
-    final int type = _selectedType;
 
-    final newCategory =
-        CategoryDTONew(description: description, type: _selectedType);
+    final newCategory = CategoryDTONew(
+        description: description, //
+        type: _selectedType, //
+        sugestedValue: _currencyController.doubleValue);
 
     bool result = await categoryService.add(newCategory);
 
@@ -73,9 +83,8 @@ class NewCategoryPageState extends State<NewCategoryPage> {
       );
     }
 
-    print("Descrição: $description, Tipo: $type -$result ");
-
     _descriptionController.clear();
+    _currencyController.clear();
   }
 
   @override
@@ -123,6 +132,14 @@ class NewCategoryPageState extends State<NewCategoryPage> {
               ),
             ),
             const SizedBox(height: 32),
+            TextField(
+              controller: _currencyController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Valor Sugerido',
+                border: OutlineInputBorder(),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

@@ -26,6 +26,9 @@ class BalancePage extends StatefulWidget {
 class _BalancePageState extends State<BalancePage> {
   final BalanceService balanceService = BalanceService();
 
+  DateTime balanceDate = DateTime(DateTime.now().year, DateTime.now().month,
+      DateTime.now().day, 23, 59, 59);
+
   late Future balanceFuture;
 
   @override
@@ -37,8 +40,18 @@ class _BalancePageState extends State<BalancePage> {
   void _loadBalance() {
     setState(() {
       balanceFuture =
-          balanceService.getBalance(widget.id.toString(), DateTime.now());
+          balanceService.getBalance(widget.id.toString(), balanceDate);
     });
+  }
+
+  void _previousBalance() {
+    balanceDate = balanceDate.add(const Duration(days: -1));
+    _loadBalance();
+  }
+
+  void _nextBalance() {
+    balanceDate = balanceDate.add(const Duration(days: 1));
+    _loadBalance();
   }
 
   @override
@@ -68,12 +81,8 @@ class _BalancePageState extends State<BalancePage> {
                         AmountDisplay(
                           amount: balance.amount,
                           date: balance.date,
-                          forWard: () {
-                            print('para frente');
-                          },
-                          backWard: () {
-                            print('para traz');
-                          },
+                          forWard: _nextBalance,
+                          backWard: _previousBalance,
                         ),
                         const Text('Últimos lançamentos'),
                         Expanded(

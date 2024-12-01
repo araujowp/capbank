@@ -17,7 +17,6 @@ class CategoryService {
           .get();
 
       if (snapshot.exists) {
-        print("Categoria com a descrição '${category.description}' já existe.");
         return false;
       }
 
@@ -27,20 +26,17 @@ class CategoryService {
         "id": newCategoryRef.key,
         "description": category.description,
         "type": category.type,
+        "sugestedValue": category.sugestedValue
       });
       return true;
     } catch (e) {
-      print("Erro ao adicionar categoria: $e");
       return false;
     }
   }
 
   Future<List<CategoryDTO>> getByType(int type) async {
     try {
-      final snapshot = await _dbRef
-          .orderByChild('type')
-          .equalTo(type) // Filtra pelo tipo fornecido
-          .get();
+      final snapshot = await _dbRef.orderByChild('type').equalTo(type).get();
 
       List<CategoryDTO> categories = [];
       for (var child in snapshot.children) {
@@ -48,13 +44,14 @@ class CategoryService {
           description: child.child('description').value.toString(),
           id: child.child('id').value.toString(),
           type: int.parse(child.child('type').value.toString()),
+          sugestedValue: double.tryParse(
+                  child.child('sugestedValue').value?.toString() ?? '0.0') ??
+              0.0,
         ));
       }
-
       categories.sort((a, b) => a.description.compareTo(b.description));
       return categories;
     } catch (e) {
-      print("Erro ao buscar categorias: $e");
       return [];
     }
   }

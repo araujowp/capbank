@@ -11,9 +11,6 @@ class TransactionService {
   Future<bool> add(TransactionDtoNew transactionDto) async {
     try {
       final newTransactionRef = _dbRef.push();
-      print("Chave gerada: ${newTransactionRef.key}");
-
-      print(transactionDto.category.toJson());
 
       await newTransactionRef.set({
         "id": newTransactionRef.key,
@@ -27,7 +24,6 @@ class TransactionService {
 
       return true;
     } catch (e) {
-      print("Falha ao adicionar lançamento $e ");
       return false;
     }
   }
@@ -49,7 +45,8 @@ class TransactionService {
               Map<String, dynamic>.from(value as Map<Object?, Object?>);
           final transactionDate = DateTime.fromMillisecondsSinceEpoch(
               transactionData["transaction_date"]);
-          if (transactionDate.isBefore(period)) {
+          if (transactionDate.isBefore(period) ||
+              transactionDate.isAtSameMomentAs(period)) {
             transactions.add(TransactionDto(
               id: key,
               description: transactionData["description"],
