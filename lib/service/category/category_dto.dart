@@ -24,6 +24,8 @@ class CategoryDTO {
         description: json['description'] as String,
         id: json['id'] as String,
         type: json['type'] as int,
-        sugestedValue: json['sugestedValue'] as double);
+        sugestedValue: (json['sugestedValue'] is int)
+            ? (json['sugestedValue'] as int).toDouble()
+            : json['sugestedValue'] as double);
   }
 }
