@@ -24,6 +24,7 @@ class UserAvatar extends StatelessWidget {
           elevation: 5,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -33,7 +34,11 @@ class UserAvatar extends StatelessWidget {
                   backgroundImage: AssetImage(photo),
                 ),
                 const SizedBox(width: 10),
-                Text(name, style: const TextStyle(fontSize: 16)),
+                Text(name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontSize: 16)),
               ],
             ),
           ),

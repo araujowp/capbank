@@ -127,6 +127,12 @@ class _TransactionPageState extends State<TransactionPage> {
     }
   }
 
+  TextStyle _getTextStyle(BuildContext context, bool large) {
+    return large
+        ? TextStyle(color: Theme.of(context).textTheme.titleLarge!.color)
+        : TextStyle(color: Theme.of(context).textTheme.titleSmall!.color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,7 +149,10 @@ class _TransactionPageState extends State<TransactionPage> {
                   'Data lançamento: ${UtilFormat.toDate(widget.transactionDate)}'),
               const SizedBox(height: 16.0),
 
-              const Text('Tipo de Operação'),
+              Text(
+                'Tipo de Operação',
+                style: _getTextStyle(context, true),
+              ),
               Row(
                 children: [
                   Radio(
@@ -156,7 +165,10 @@ class _TransactionPageState extends State<TransactionPage> {
                       _loadCategories();
                     },
                   ),
-                  const Text('Crédito'),
+                  Text(
+                    'Crédito',
+                    style: _getTextStyle(context, true),
+                  ),
                   Radio(
                     value: 2,
                     groupValue: _operation,
@@ -167,12 +179,18 @@ class _TransactionPageState extends State<TransactionPage> {
                       _loadCategories();
                     },
                   ),
-                  const Text('Débito'),
+                  Text(
+                    'Débito',
+                    style: _getTextStyle(context, true),
+                  ),
                 ],
               ),
 
               const SizedBox(height: 16.0),
-              const Text('Categoria'),
+              Text(
+                'Categoria',
+                style: _getTextStyle(context, true),
+              ),
               Row(
                 children: [
                   Expanded(
@@ -183,13 +201,18 @@ class _TransactionPageState extends State<TransactionPage> {
                         borderRadius: BorderRadius.circular(6),
                       )),
                       isExpanded: true,
-                      hint: const Text('Selecione uma categoria'),
+                      hint: Text(
+                        'Selecione uma categoria',
+                        style: _getTextStyle(context, true),
+                      ),
                       value: _selectedCategory,
                       items: _categories.map((category) {
                         return DropdownMenuItem<CategoryDTO>(
                           value: category,
-                          child:
-                              Text(category.description), // Exibe a descrição
+                          child: Text(
+                            category.description,
+                            style: _getTextStyle(context, true),
+                          ), // Exibe a descrição
                         );
                       }).toList(),
                       onChanged: (value) {

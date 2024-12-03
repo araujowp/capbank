@@ -35,6 +35,7 @@ class AmountDisplay extends StatelessWidget {
       child: Card(
         elevation: 1,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
