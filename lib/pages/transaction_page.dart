@@ -146,9 +146,9 @@ class _TransactionPageState extends State<TransactionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
+                  style: _getTextStyle(context, true),
                   'Data lançamento: ${UtilFormat.toDate(widget.transactionDate)}'),
               const SizedBox(height: 16.0),
-
               Text(
                 'Tipo de Operação',
                 style: _getTextStyle(context, true),
@@ -185,7 +185,6 @@ class _TransactionPageState extends State<TransactionPage> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 16.0),
               Text(
                 'Categoria',
@@ -241,8 +240,6 @@ class _TransactionPageState extends State<TransactionPage> {
                       }),
                 ],
               ),
-
-              // Campo de texto para descrição
               const SizedBox(height: 16.0),
               TextField(
                 controller: _descriptionController,
@@ -251,18 +248,15 @@ class _TransactionPageState extends State<TransactionPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 16.0),
               TextField(
-                controller: _currencyController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Valor em reais',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+                  controller: _currencyController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Valor em reais',
+                    border: OutlineInputBorder(),
+                  )),
               const SizedBox(height: 24.0),
-
               Row(
                 children: [
                   ElevatedButton(
