@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/components/plus_button.dart';
 import 'package:capbank/pages/new_category_page.dart';
 import 'package:capbank/service/category/category_dto.dart';
@@ -12,11 +13,13 @@ import 'package:flutter/material.dart';
 
 class TransactionPage extends StatefulWidget {
   final int id;
+  final String picture;
   final DateTime transactionDate;
 
   const TransactionPage({
     super.key,
     required this.id,
+    required this.picture,
     required this.transactionDate,
   });
 
@@ -137,7 +140,7 @@ class _TransactionPageState extends State<TransactionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo lançamento'),
+        title: CustomTitle('Novo Lançamento', widget.picture),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -231,10 +234,10 @@ class _TransactionPageState extends State<TransactionPage> {
                       size: 40,
                       onPressed: () {
                         Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const NewCategoryPage()))
-                            .then((_) {
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    NewCategoryPage(widget.picture))).then((_) {
                           _loadCategories();
                         });
                       }),

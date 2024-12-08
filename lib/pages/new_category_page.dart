@@ -1,12 +1,15 @@
 // ignore_for_file: avoid_print
 
+import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/service/category/category_dto_new.dart';
 import 'package:capbank/service/category/category_service.dart';
 import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 
 class NewCategoryPage extends StatefulWidget {
-  const NewCategoryPage({super.key});
+  final String picture;
+
+  const NewCategoryPage(this.picture, {super.key});
 
   @override
   NewCategoryPageState createState() => NewCategoryPageState();
@@ -91,7 +94,7 @@ class NewCategoryPageState extends State<NewCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nova Categoria"),
+        title: CustomTitle('Nova Categoria', widget.picture),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

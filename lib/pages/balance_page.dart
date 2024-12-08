@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:capbank/components/amount_display.dart';
+import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/components/plus_button.dart';
 import 'package:capbank/components/transaction_card.dart';
 import 'package:capbank/pages/transaction_page.dart';
@@ -58,7 +59,7 @@ class _BalancePageState extends State<BalancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Olá, ${widget.name}"),
+        title: CustomTitle('Ola ${widget.name}', widget.photo),
       ),
       body: Center(
         child: FutureBuilder(
@@ -107,6 +108,7 @@ class _BalancePageState extends State<BalancePage> {
                               MaterialPageRoute(
                                 builder: (_) => TransactionPage(
                                   id: widget.id,
+                                  picture: widget.photo,
                                   transactionDate: balance.date,
                                 ),
                               ),
