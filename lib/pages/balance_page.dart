@@ -55,6 +55,12 @@ class _BalancePageState extends State<BalancePage> {
     _loadBalance();
   }
 
+  TextStyle _getTextStyle(bool large) {
+    return large
+        ? TextStyle(color: Theme.of(context).textTheme.titleLarge!.color)
+        : TextStyle(color: Theme.of(context).textTheme.titleSmall!.color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,14 +84,17 @@ class _BalancePageState extends State<BalancePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Saldo'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(style: _getTextStyle(true), 'Saldo'),
+                        ),
                         AmountDisplay(
                           amount: balance.amount,
                           date: balance.date,
                           forWard: _nextBalance,
                           backWard: _previousBalance,
                         ),
-                        const Text('Últimos lançamentos'),
+                        Text(style: _getTextStyle(true), 'Lançamentos'),
                         Expanded(
                           child: ListView.builder(
                             itemCount: balance.transactions.length,

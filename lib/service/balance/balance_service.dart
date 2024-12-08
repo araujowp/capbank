@@ -17,10 +17,15 @@ class BalanceService {
           : previousValue - transaction.amount;
     });
 
+    List<TransactionDto> filteredTransactions =
+        transactions.where((transaction) {
+      return transaction.transactionDate == transactionDate;
+    }).toList();
+
     return BalanceDTO(
       amount: totalAmount,
       date: transactionDate,
-      transactions: transactions,
+      transactions: filteredTransactions,
     );
   }
 }

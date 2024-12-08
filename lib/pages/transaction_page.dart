@@ -130,7 +130,7 @@ class _TransactionPageState extends State<TransactionPage> {
     }
   }
 
-  TextStyle _getTextStyle(BuildContext context, bool large) {
+  TextStyle _getTextStyle(bool large) {
     return large
         ? TextStyle(color: Theme.of(context).textTheme.titleLarge!.color)
         : TextStyle(color: Theme.of(context).textTheme.titleSmall!.color);
@@ -149,12 +149,12 @@ class _TransactionPageState extends State<TransactionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  style: _getTextStyle(context, true),
+                  style: _getTextStyle(true),
                   'Data lançamento: ${UtilFormat.toDate(widget.transactionDate)}'),
               const SizedBox(height: 16.0),
               Text(
                 'Tipo de Operação',
-                style: _getTextStyle(context, true),
+                style: _getTextStyle(true),
               ),
               Row(
                 children: [
@@ -170,7 +170,7 @@ class _TransactionPageState extends State<TransactionPage> {
                   ),
                   Text(
                     'Crédito',
-                    style: _getTextStyle(context, true),
+                    style: _getTextStyle(true),
                   ),
                   Radio(
                     value: 2,
@@ -184,14 +184,14 @@ class _TransactionPageState extends State<TransactionPage> {
                   ),
                   Text(
                     'Débito',
-                    style: _getTextStyle(context, true),
+                    style: _getTextStyle(true),
                   ),
                 ],
               ),
               const SizedBox(height: 16.0),
               Text(
                 'Categoria',
-                style: _getTextStyle(context, true),
+                style: _getTextStyle(true),
               ),
               Row(
                 children: [
@@ -205,7 +205,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       isExpanded: true,
                       hint: Text(
                         'Selecione uma categoria',
-                        style: _getTextStyle(context, true),
+                        style: _getTextStyle(true),
                       ),
                       value: _selectedCategory,
                       items: _categories.map((category) {
@@ -213,7 +213,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           value: category,
                           child: Text(
                             category.description,
-                            style: _getTextStyle(context, true),
+                            style: _getTextStyle(true),
                           ), // Exibe a descrição
                         );
                       }).toList(),
