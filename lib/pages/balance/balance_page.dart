@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_print
 
-import 'package:capbank/components/amount_display.dart';
+import 'package:capbank/pages/balance/widget/amount_display.dart';
 import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/components/plus_button.dart';
-import 'package:capbank/components/transaction_card.dart';
-import 'package:capbank/pages/transaction_page.dart';
+import 'package:capbank/pages/balance/widget/transaction_card.dart';
+import 'package:capbank/pages/new_transaction_page.dart';
 import 'package:capbank/service/balance/balance_service.dart';
 import 'package:flutter/material.dart';
 
@@ -115,7 +115,7 @@ class _BalancePageState extends State<BalancePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => TransactionPage(
+                                builder: (_) => NewTransactionPage(
                                   id: widget.id,
                                   picture: widget.photo,
                                   transactionDate: balance.date,

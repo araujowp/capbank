@@ -11,12 +11,12 @@ import 'package:capbank/util/util_format.dart';
 import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 
-class TransactionPage extends StatefulWidget {
+class NewTransactionPage extends StatefulWidget {
   final int id;
   final String picture;
   final DateTime transactionDate;
 
-  const TransactionPage({
+  const NewTransactionPage({
     super.key,
     required this.id,
     required this.picture,
@@ -24,10 +24,10 @@ class TransactionPage extends StatefulWidget {
   });
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<NewTransactionPage> createState() => _TransactionPageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> {
+class _TransactionPageState extends State<NewTransactionPage> {
   int _operation = 1;
   CategoryDTO? _selectedCategory;
   final TextEditingController _descriptionController = TextEditingController();

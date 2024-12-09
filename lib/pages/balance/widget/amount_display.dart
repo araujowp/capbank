@@ -1,4 +1,4 @@
-import 'package:capbank/components/date_navigation.dart';
+import 'package:capbank/pages/balance/widget/date_navigation.dart';
 import 'package:capbank/util/util_format.dart';
 import 'package:flutter/material.dart';
 
