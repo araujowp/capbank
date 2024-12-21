@@ -3,13 +3,32 @@
 import 'package:capbank/service/category/category_dto.dart';
 import 'package:capbank/service/transaction/transaction_dto.dart';
 import 'package:capbank/service/transaction/transaction_dto_new.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class TransactionService {
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("transaction");
 
+  // Método para autenticar anonimamente
+  Future<void> _authenticateAnonymously() async {
+    try {
+      User? user = FirebaseAuth
+          .instance.currentUser; // Verifica se o usuário já está autenticado
+      if (user == null) {
+        await FirebaseAuth.instance.signInAnonymously(); // Autenticação anônima
+        print("Usuário autenticado anonimamente.");
+      } else {
+        print("Usuário já autenticado: \${user.uid}");
+      }
+    } catch (e) {
+      print("Erro ao autenticar anonimamente: \$e");
+      rethrow; // Propaga o erro se necessário
+    }
+  }
+
   Future<bool> add(TransactionDtoNew transactionDto) async {
     try {
+      await _authenticateAnonymously();
       final newTransactionRef = _dbRef.push();
 
       await newTransactionRef.set({
@@ -33,6 +52,8 @@ class TransactionService {
     List<TransactionDto> transactions = [];
 
     try {
+      await _authenticateAnonymously();
+
       final query = _dbRef.orderByChild("user_id").equalTo(userId);
       final snapshot = await query.once();
       if (snapshot.snapshot.value != null) {

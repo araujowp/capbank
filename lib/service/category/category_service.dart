@@ -3,14 +3,33 @@
 //import 'dart:ffi';
 
 import 'package:capbank/service/category/category_dto.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'category_dto_new.dart';
 
 class CategoryService {
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("category");
 
+  // Método para autenticar anonimamente
+  Future<void> _authenticateAnonymously() async {
+    try {
+      User? user = FirebaseAuth
+          .instance.currentUser; // Verifica se o usuário já está autenticado
+      if (user == null) {
+        await FirebaseAuth.instance.signInAnonymously(); // Autenticação anônima
+        print("Usuário autenticado anonimamente.");
+      } else {
+        print("Usuário já autenticado: \${user.uid}");
+      }
+    } catch (e) {
+      print("Erro ao autenticar anonimamente: \$e");
+      rethrow; // Propaga o erro se necessário
+    }
+  }
+
   Future<bool> add(CategoryDTONew category) async {
     try {
+      await _authenticateAnonymously();
       final snapshot = await _dbRef
           .orderByChild('description')
           .equalTo(category.description)
@@ -36,6 +55,7 @@ class CategoryService {
 
   Future<List<CategoryDTO>> getByType(int type) async {
     try {
+      await _authenticateAnonymously();
       final snapshot = await _dbRef.orderByChild('type').equalTo(type).get();
 
       List<CategoryDTO> categories = [];
