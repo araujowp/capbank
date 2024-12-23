@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:capbank/service/user/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,7 @@ class _LoginMailPageState extends State<LoginMailPage> {
         password: _passwordController.text.trim(),
       );
       print("Usuário autenticado: ${userCredential.user?.email}");
+      print(" ----- Usuário id: ${userCredential.user?.uid}");
 
       if (mounted) {
         ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
@@ -113,6 +115,8 @@ class _LoginMailPageState extends State<LoginMailPage> {
                   height: 16,
                 ),
                 ElevatedButton(onPressed: _login, child: const Text("Entrar")),
+                ElevatedButton(
+                    onPressed: _cadastrar, child: const Text("Cadastrar")),
               ],
             ),
           )),

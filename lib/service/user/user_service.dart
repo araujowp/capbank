@@ -1,6 +1,9 @@
 import 'package:capbank/service/user/user_dto.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class UserService {
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("user");
+
   final List<UserDTO> _users = [
     UserDTO(
         id: 1,
@@ -17,5 +20,16 @@ class UserService {
   Future<List<UserDTO>> fetchUsers() async {
     await Future.delayed(const Duration(seconds: 1));
     return _users;
+  }
+
+  Future<bool> add(String name, int id, String uuid) async {
+    try {
+      final newUserRef = _dbRef.push();
+
+      await newUserRef.set({"name": name, "id": id, "uuid": uuid});
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
