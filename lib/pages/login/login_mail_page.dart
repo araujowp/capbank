@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginMailPage extends StatefulWidget {
@@ -10,15 +11,73 @@ class LoginMailPage extends StatefulWidget {
 }
 
 class _LoginMailPageState extends State<LoginMailPage> {
-  final TextEditingController _mailControler = TextEditingController();
-  final TextEditingController _passWordControler = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _login() {
-    if (_mailControler.text.isEmpty || _passWordControler.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Preencha e-mail e senha "),
-        backgroundColor: Colors.red,
-      ));
+  void _login() async {
+    // Verificar se o widget ainda está montado
+    if (!mounted) return;
+
+    // Captura o BuildContext antes de operações assíncronas
+    final currentContext = context;
+
+    if (_mailController.text.isEmpty || _passwordController.text.isEmpty) {
+      // Verifique se o widget ainda está montado antes de chamar ScaffoldMessenger
+      if (mounted) {
+        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
+          content: Text("Preencha e-mail e senha"),
+          backgroundColor: Colors.red,
+        ));
+      }
+      return; // Retorna para evitar continuar o login
+    }
+
+    try {
+      print(_passwordController.text.trim());
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _mailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      print("Usuário autenticado: ${userCredential.user?.email}");
+
+      if (mounted) {
+        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
+          content: Text("Login realizado com sucesso."),
+          backgroundColor: Colors.green,
+        ));
+      }
+
+      // Navegue para a página principal
+      if (mounted) {
+        Navigator.pushReplacementNamed(
+            currentContext, '/home'); // Atualize conforme sua navegação
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = "Usuário não encontrado.";
+      } else if (e.code == 'wrong-password') {
+        errorMessage = "Senha incorreta.";
+      } else {
+        errorMessage = "Erro ao autenticar: ${e.message}";
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(currentContext).showSnackBar(SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ));
+      }
+    } catch (e) {
+      print("Erro inesperado: $e");
+
+      if (mounted) {
+        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
+          content: Text("Erro inesperado. Tente novamente."),
+          backgroundColor: Colors.red,
+        ));
+      }
     }
   }
 
@@ -37,7 +96,7 @@ class _LoginMailPageState extends State<LoginMailPage> {
               children: [
                 TextField(
                   style: const TextStyle(fontSize: 20),
-                  controller: _mailControler,
+                  controller: _mailController,
                   decoration: const InputDecoration(
                       labelText: "E-mail", border: OutlineInputBorder()),
                 ),
@@ -45,7 +104,7 @@ class _LoginMailPageState extends State<LoginMailPage> {
                   height: 16,
                 ),
                 TextField(
-                  controller: _passWordControler,
+                  controller: _passwordController,
                   decoration: const InputDecoration(
                       labelText: "Senha", border: OutlineInputBorder()),
                   obscureText: true,
