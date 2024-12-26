@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:capbank/service/user/user_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:capbank/business/login_business.dart';
+import 'package:capbank/pages/balance/balance_page.dart';
+import 'package:capbank/service/user/user_dto.dart';
 import 'package:flutter/material.dart';
 
 class LoginMailPage extends StatefulWidget {
@@ -14,72 +15,51 @@ class LoginMailPage extends StatefulWidget {
 class _LoginMailPageState extends State<LoginMailPage> {
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _login() async {
-    // Verificar se o widget ainda está montado
     if (!mounted) return;
 
-    // Captura o BuildContext antes de operações assíncronas
-    final currentContext = context;
-
     if (_mailController.text.isEmpty || _passwordController.text.isEmpty) {
-      // Verifique se o widget ainda está montado antes de chamar ScaffoldMessenger
-      if (mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
-          content: Text("Preencha e-mail e senha"),
-          backgroundColor: Colors.red,
-        ));
-      }
-      return; // Retorna para evitar continuar o login
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Preencha e-mail e senha."),
+        backgroundColor: Colors.red,
+      ));
+      return;
     }
 
     try {
-      print(_passwordController.text.trim());
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _mailController.text.trim(),
-        password: _passwordController.text.trim(),
+      LoginBusiness loginBusiness = LoginBusiness();
+      UserDTO userDTO = await loginBusiness.login(
+          _mailController.text, _passwordController.text);
+
+      print('------------------------------');
+      print(userDTO.toString());
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Login realizado com sucesso."),
+        backgroundColor: Colors.green,
+      ));
+
+      print(" -----> assets/images/${userDTO.photo} ?");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BalancePage(
+            id: userDTO.id,
+            name: userDTO.name,
+            photo: "assets/images/${userDTO.photo}",
+          ),
+        ),
       );
-      print("Usuário autenticado: ${userCredential.user?.email}");
-      print(" ----- Usuário id: ${userCredential.user?.uid}");
-
-      if (mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
-          content: Text("Login realizado com sucesso."),
-          backgroundColor: Colors.green,
-        ));
-      }
-
-      // Navegue para a página principal
-      if (mounted) {
-        Navigator.pushReplacementNamed(
-            currentContext, '/home'); // Atualize conforme sua navegação
-      }
-    } on FirebaseAuthException catch (e) {
-      String errorMessage;
-      if (e.code == 'user-not-found') {
-        errorMessage = "Usuário não encontrado.";
-      } else if (e.code == 'wrong-password') {
-        errorMessage = "Senha incorreta.";
-      } else {
-        errorMessage = "Erro ao autenticar: ${e.message}";
-      }
-
-      if (mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(SnackBar(
-          content: Text(errorMessage),
-          backgroundColor: Colors.red,
-        ));
-      }
     } catch (e) {
-      print("Erro inesperado: $e");
+      if (!mounted) return;
 
-      if (mounted) {
-        ScaffoldMessenger.of(currentContext).showSnackBar(const SnackBar(
-          content: Text("Erro inesperado. Tente novamente."),
-          backgroundColor: Colors.red,
-        ));
-      }
+      String errorMessage = e.toString(); // Converte o erro em string
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -115,8 +95,6 @@ class _LoginMailPageState extends State<LoginMailPage> {
                   height: 16,
                 ),
                 ElevatedButton(onPressed: _login, child: const Text("Entrar")),
-                ElevatedButton(
-                    onPressed: _cadastrar, child: const Text("Cadastrar")),
               ],
             ),
           )),
