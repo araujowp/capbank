@@ -1,12 +1,14 @@
 // ignore_for_file: avoid_print
 
 import 'package:capbank/business/login_business.dart';
-import 'package:capbank/pages/balance/balance_page.dart';
+import 'package:capbank/pages/home/home_page.dart';
 import 'package:capbank/service/user/user_dto.dart';
 import 'package:flutter/material.dart';
 
 class LoginMailPage extends StatefulWidget {
-  const LoginMailPage({super.key});
+  final bool showAppBar;
+
+  const LoginMailPage({super.key, this.showAppBar = true});
 
   @override
   State<LoginMailPage> createState() => _LoginMailPageState();
@@ -19,7 +21,8 @@ class _LoginMailPageState extends State<LoginMailPage> {
   void _login() async {
     if (!mounted) return;
 
-    if (_mailController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_mailController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Preencha e-mail e senha."),
         backgroundColor: Colors.red,
@@ -30,10 +33,8 @@ class _LoginMailPageState extends State<LoginMailPage> {
     try {
       LoginBusiness loginBusiness = LoginBusiness();
       UserDTO userDTO = await loginBusiness.login(
-          _mailController.text, _passwordController.text);
+          _mailController.text.trim(), _passwordController.text.trim());
 
-      print('------------------------------');
-      print(userDTO.toString());
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -41,11 +42,10 @@ class _LoginMailPageState extends State<LoginMailPage> {
         backgroundColor: Colors.green,
       ));
 
-      print(" -----> assets/images/${userDTO.photo} ?");
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => BalancePage(
+          builder: (context) => HomePage(
             id: userDTO.id,
             name: userDTO.name,
             photo: "assets/images/${userDTO.photo}",
@@ -66,9 +66,11 @@ class _LoginMailPageState extends State<LoginMailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Quem e você?"),
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: const Text("Quem e você?"),
+            )
+          : null,
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(

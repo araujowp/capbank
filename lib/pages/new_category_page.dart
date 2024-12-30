@@ -93,9 +93,6 @@ class NewCategoryPageState extends State<NewCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CustomTitle('Nova Categoria', widget.picture),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
