@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/service/category/category_dto_new.dart';
 import 'package:capbank/service/category/category_service.dart';
+import 'package:capbank/util/util_message.dart';
 import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -41,13 +41,8 @@ class NewCategoryPageState extends State<NewCategoryPage> {
 
   bool _onValidation() {
     if (_descriptionController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Favor informe a descrição !',
-              style: TextStyle(color: Colors.green)),
-          backgroundColor: Colors.yellow,
-        ),
-      );
+      UtilMessage().show(context, "Favor informe a descrição !",
+          messageType: MessageType.error);
       return false;
     } else {
       return true;
@@ -70,20 +65,12 @@ class NewCategoryPageState extends State<NewCategoryPage> {
 
     if (result) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Categoria adicionada com sucesso!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      UtilMessage().show(context, "Categoria adicionada com sucesso!");
     } else {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erro ao adicionar categoria. Tente novamente!'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      UtilMessage().show(
+          context, "Erro ao adicionar categoria. Tente novamente!",
+          messageType: MessageType.error);
     }
 
     _descriptionController.clear();

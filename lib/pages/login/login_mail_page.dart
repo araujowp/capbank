@@ -1,8 +1,7 @@
-// ignore_for_file: avoid_print
-
 import 'package:capbank/business/login_business.dart';
 import 'package:capbank/pages/home/home_page.dart';
 import 'package:capbank/service/user/user_dto.dart';
+import 'package:capbank/util/util_message.dart';
 import 'package:flutter/material.dart';
 
 class LoginMailPage extends StatefulWidget {
@@ -23,10 +22,8 @@ class _LoginMailPageState extends State<LoginMailPage> {
 
     if (_mailController.text.trim().isEmpty ||
         _passwordController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Preencha e-mail e senha."),
-        backgroundColor: Colors.red,
-      ));
+      UtilMessage().show(context, "Preencha e-mail e senha.",
+          messageType: MessageType.error);
       return;
     }
 
@@ -37,10 +34,10 @@ class _LoginMailPageState extends State<LoginMailPage> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Login realizado com sucesso."),
-        backgroundColor: Colors.green,
-      ));
+      UtilMessage().show(
+        context,
+        "Login realizado com sucesso!.",
+      );
 
       Navigator.pushReplacement(
         context,
