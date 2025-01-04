@@ -1,6 +1,7 @@
 import 'package:capbank/business/login_business.dart';
 import 'package:capbank/pages/home/home_page.dart';
 import 'package:capbank/service/user/user_dto.dart';
+import 'package:capbank/util/security_storage.dart';
 import 'package:capbank/util/util_message.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,9 @@ class _LoginMailPageState extends State<LoginMailPage> {
         "Login realizado com sucesso!.",
       );
 
+      SecureStorage.saveLogin(
+          _mailController.text.trim(), _passwordController.text.trim());
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -52,11 +56,28 @@ class _LoginMailPageState extends State<LoginMailPage> {
     } catch (e) {
       if (!mounted) return;
 
-      String errorMessage = e.toString(); // Converte o erro em string
+      String errorMessage = e.toString();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(errorMessage),
         backgroundColor: Colors.red,
       ));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLoginData();
+  }
+
+  Future<void> _loadLoginData() async {
+    final loginData = await SecureStorage.getLogin();
+
+    if (loginData['username'] != null && loginData['password'] != null) {
+      setState(() {
+        _mailController.text = loginData['username']!;
+        _passwordController.text = loginData['password']!;
+      });
     }
   }
 
