@@ -71,12 +71,12 @@ class _LoginMailPageState extends State<LoginMailPage> {
   }
 
   Future<void> _loadLoginData() async {
-    final loginData = await SecureStorage.getLogin();
+    final loginData = await SecureStorage.getLogins();
 
     if (loginData['username'] != null && loginData['password'] != null) {
       setState(() {
         _mailController.text = loginData['username']!;
-        _passwordController.text = loginData['password']!;
+        _passwordController.text = loginData['password1']!;
       });
     }
   }
