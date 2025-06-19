@@ -1,5 +1,6 @@
 import 'package:capbank/components/custom_title.dart';
 import 'package:capbank/pages/balance/balance_page.dart';
+import 'package:capbank/pages/login/login_list.dart';
 import 'package:capbank/pages/login/login_mail_page.dart';
 import 'package:capbank/pages/new_category_page.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +32,15 @@ class _HomePageState extends State<HomePage> {
     _pages = [
       BalancePage(id: widget.id, name: widget.name, photo: widget.photo),
       NewCategoryPage(widget.photo),
-      const LoginMailPage(showAppBar: false)
+      const LoginMailPage(showAppBar: false),
+      const LoginListPage()
     ];
 
     _titles = [
       'Olá ${widget.name}',
       'Nova Categoria',
       'Quem é você?',
+      'Escolha'
     ];
   }
 
@@ -67,6 +70,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Login',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Login2',
           ),
         ],
       ),

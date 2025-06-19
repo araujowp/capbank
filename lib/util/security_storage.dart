@@ -4,14 +4,14 @@ class SecureStorage {
   static const _secureStorage = FlutterSecureStorage();
 
   static Future<void> saveLogin(String username, String password) async {
-    await _secureStorage.write(key: 'username1', value: username);
-    await _secureStorage.write(key: 'password1', value: password);
-
     Map<String, String?> logins = await getLogins();
 
     List<MapEntry<String, String?>> existingLogins = logins.entries
         .where((entry) => entry.key.isNotEmpty && entry.key != username)
         .toList();
+
+    await _secureStorage.write(key: 'username1', value: username);
+    await _secureStorage.write(key: 'password1', value: password);
 
     int index = 2;
     for (var entry in existingLogins) {
